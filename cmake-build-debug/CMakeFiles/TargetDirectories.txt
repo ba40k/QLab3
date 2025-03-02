@@ -1,0 +1,5 @@
+/home/radamir/CLionProjects/qtPtojects/QGraph/cmake-build-debug/CMakeFiles/QGraph.dir
+/home/radamir/CLionProjects/qtPtojects/QGraph/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/radamir/CLionProjects/qtPtojects/QGraph/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/radamir/CLionProjects/qtPtojects/QGraph/cmake-build-debug/CMakeFiles/QGraph_autogen_timestamp_deps.dir
+/home/radamir/CLionProjects/qtPtojects/QGraph/cmake-build-debug/CMakeFiles/QGraph_autogen.dir
