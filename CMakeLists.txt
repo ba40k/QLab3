@@ -17,7 +17,7 @@ set(CMAKE_AUTORCC ON)
 set(FORMS
         mainwindow.ui
 )
-add_executable(QGraph main.cpp mainwindow.cpp)
+add_executable(QGraph main.cpp mainwindow.cpp treePaint.cpp)
 target_link_libraries(QGraph
         Qt::Core
         Qt::Gui

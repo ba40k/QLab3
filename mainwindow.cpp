@@ -74,6 +74,9 @@ MainWindow::MainWindow(QWidget *parent) {
     output->setMaximumWidth(200);
     output->setMaximumHeight(200);
 
+    treePainter = new treePaint(centralWidget);
+    leftScreenPart->addWidget(treePainter);
+
     screenSplit->addLayout(leftScreenPart);
     screenSplit->addLayout(rightScreenPart);
 
