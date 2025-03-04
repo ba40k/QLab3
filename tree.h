@@ -93,6 +93,10 @@ void Tree<dataType>::recursiveDelete(dataType data, Node* vertex) {
             } else {
                 toSwap->getParent()->setLeft(toSwap);
             }
+
+            toSwap->setLeft(vertex->getLeft());
+            toSwap->setRight(vertex->getRight());
+
             delete vertex;
             return ;
         }
