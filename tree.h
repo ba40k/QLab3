@@ -283,6 +283,7 @@ std::ostream& operator<<(std::ostream&out, Tree<dataType> &tree) {
 
 template<typename dataType>
 Tree<dataType>::~Tree() {
+    std::cout<<"DESTRUCTIR";
     deleteTree(root);
 }
 
