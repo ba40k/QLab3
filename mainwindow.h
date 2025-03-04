@@ -12,6 +12,8 @@
 #include <QRadioButton>
 #include<QLabel>
 #include<QLineEdit>
+#include<QTextEdit>
+#include<QPainter>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -40,13 +42,14 @@ class MainWindow : public QMainWindow
 
     QLabel* inputLabel;
     QLabel* outputLabel;
-    QLabel* output;
-    QLineEdit* input;
+    QTextEdit* output;
+    QTextEdit* input;
 
 
+    Tree<int> tree;
 
 public:
-    Tree<int> tree;
+
 
 
 private slots:
