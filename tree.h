@@ -6,6 +6,7 @@
 #define Tree_H
 #include <iostream>
 #include <functional>
+#include <QVector>
 
 template<typename dataType>
 class Tree {
@@ -29,7 +30,7 @@ private:
         void setRight(Node *_right);
 
       };
-     void recursiveDelete(dataType data, Node* vertex);
+      void recursiveDelete(dataType data, Node* vertex);
       Node *root;
   void deleteTree(Node* vertex);
   Node* findMinmumGreater(Node* vertex);
@@ -40,11 +41,22 @@ public:
   void insert(dataType data);
   bool search(dataType data);
   void erase(dataType data);
+    void forwardTraversal(Node* vertex, QVector<dataType> &res);
+    void backwardTraversal(Node* vertex, QVector<dataType> &res);
+    void inOrderTraversal(Node* vertex, QVector<dataType> &res);
+
+
 };
 template<typename dataType>
 Tree<dataType>::Tree() {
     root = nullptr;
 }
+
+template<typename dataType>
+Tree<dataType>::Node* Tree<dataType>::getRoot() {
+    return root;
+}
+
 template<typename dataType>
 void Tree<dataType>::recursiveDelete(dataType data, Node* vertex) {
      if (data == vertex->getData()) {
@@ -224,6 +236,51 @@ bool Tree<dataType>::search(dataType data) {
     }
     return false;
 }
+
+template<typename dataType>
+void Tree<dataType>::forwardTraversal(Node *vertex,QVector<dataType> &res) {
+    if (vertex == nullptr) {
+        return ;
+    }
+    res.push_back(vertex->getData());
+    forwardTraversal(vertex->getLeft(),res);
+    forwardTraversal(vertex->getRight(),res);
+}
+
+template<typename dataType>
+void Tree<dataType>::backwardTraversal(Node *vertex,QVector<dataType> &res) {
+    if (vertex == nullptr) {
+        return ;
+    }
+    backwardTraversal(vertex->getLeft(),res);
+    backwardTraversal(vertex->getRight(),res);
+    res.push_back(vertex->getData());
+}
+
+template<typename dataType>
+void Tree<dataType>::inOrderTraversal(Node *vertex,QVector<dataType> &res) {
+    if (vertex == nullptr) {
+        return ;
+    }
+    inOrderTraversal(vertex->getLeft(),res);
+    res.push_back(vertex->getData());
+    inOrderTraversal(vertex->getRight(),res);
+}
+
+template<typename dataType>
+std::ostream& operator<<(std::ostream&out, Tree<dataType> &tree) {
+    QVector<dataType> path;
+    tree.inOrderTraversal(tree.getRoot(),path);
+    for (int i =0; i < path.size(); i++) {
+        if (i == path.size() - 1) {
+            out<<path[i];
+            return out;
+        }
+        out << path[i] << " ";
+    }
+    return out;
+}
+
 template<typename dataType>
 Tree<dataType>::~Tree() {
     deleteTree(root);

@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     t.insert(16);
     t.insert(6);
     t.insert(8);
-    std::cout<<1;
+    std::cout<<t<<'\n';
     t.erase(7);
 
 
