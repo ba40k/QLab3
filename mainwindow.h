@@ -23,7 +23,7 @@ class MainWindow : public QMainWindow
     QWidget* centralWidget;
     QHBoxLayout* layout;
 public:
-    Tree tree;
+    Tree<int> tree;
 
 
 private slots:
