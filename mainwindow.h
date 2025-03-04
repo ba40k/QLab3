@@ -9,6 +9,9 @@
 #include <QMainWindow>
 #include <QPainter>
 #include "tree.h"
+#include <QRadioButton>
+#include<QLabel>
+#include<QLineEdit>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -21,7 +24,27 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     QPainter* painter;
     QWidget* centralWidget;
-    QHBoxLayout* layout;
+    QHBoxLayout* screenSplit;
+    QVBoxLayout* leftScreenPart;
+    QHBoxLayout* rightScreenPart;
+    QVBoxLayout* rightRightScreenPart;
+    QVBoxLayout* rightLeftScreenPart;
+
+    QRadioButton* inOrderTraversalFlag;
+    QRadioButton* forwardTraversalFlag;
+    QRadioButton* backwardTraversalFlag;
+
+    QPushButton* insertButton;
+    QPushButton* deleteButton;
+    QPushButton* searchButton;
+
+    QLabel* inputLabel;
+    QLabel* outputLabel;
+    QLabel* output;
+    QLineEdit* input;
+
+
+
 public:
     Tree<int> tree;
 
