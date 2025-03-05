@@ -10,8 +10,8 @@ void treePaint::paintEvent(QPaintEvent *event) {
     }
     QPainter painter(this);
     painter.setPen(Qt::black);
-    const int ellipseWidth = 30;
-    const int ellipseHeight = 30;
+    const int ellipseWidth = 40;
+    const int ellipseHeight = 40;
     const int rootX = 150;
     const int rootY =0;
     const int shiftY = 40;
@@ -24,7 +24,15 @@ void treePaint::paintEvent(QPaintEvent *event) {
             painter.drawLine(QPoint(X+ellipseWidth/2,Y),QPoint(parentX + ellipseWidth/2,parentY+ellipseHeight));
         }
         painter.drawEllipse(X, Y, ellipseWidth, ellipseHeight);
+        QString text;
 
+        text.setNum(vertex->getData());
+
+        QFont font("Arial", 12, QFont::Bold);
+
+        painter.setFont(font);
+
+        painter.drawText(QPoint(X,Y+ellipseHeight/2),text);
         recursiveDrawing(vertex->getLeft(),leftBorder + (rightBorder-leftBorder)/4 ,Y + shiftY ,X,Y,leftBorder,rightBorder - (rightBorder-leftBorder)/2);
         recursiveDrawing(vertex->getRight(),rightBorder - (rightBorder-leftBorder)/4 ,Y + shiftY ,X,Y,(rightBorder + leftBorder)/2,rightBorder);
 
