@@ -2,6 +2,9 @@
 
 
 MainWindow::MainWindow(QWidget *parent) {
+
+    traversalOrder.resize(3,0);
+
     centralWidget = new QWidget(this);
 
     setWindowTitle("Tree vizualization");
@@ -50,15 +53,17 @@ MainWindow::MainWindow(QWidget *parent) {
     searchButton->setMaximumHeight(40);
     rightLeftScreenPart->addWidget(searchButton);
 
+
+
     inputLabel = new QLabel(centralWidget);
     inputLabel->setText("input:");
-    rightRightScreenPart->addWidget(inputLabel);
+    rightLeftScreenPart->addWidget(inputLabel);
     inputLabel->setMaximumWidth(100);
     inputLabel->setMaximumHeight(20);
 
     outputLabel = new QLabel(centralWidget);
     outputLabel->setText("output:");
-    rightLeftScreenPart->addWidget(outputLabel);
+    rightRightScreenPart->addWidget(outputLabel);
     outputLabel->setMaximumWidth(100);
     outputLabel->setMaximumHeight(20);
 
@@ -83,9 +88,159 @@ MainWindow::MainWindow(QWidget *parent) {
     rightScreenPart->addLayout(rightLeftScreenPart);
     rightScreenPart->addLayout(rightRightScreenPart);
 
+    connect(insertButton, &QPushButton::clicked, this, &MainWindow::insert);
+    connect(searchButton, &QPushButton::clicked, this, &MainWindow::search);
+    connect(deleteButton, &QPushButton::clicked, this, &MainWindow::erase);
+    connect(forwardTraversalFlag, &QRadioButton::clicked, this, &MainWindow::forwardTraversalPressed);
+    connect(backwardTraversalFlag, &QRadioButton::clicked, this, &MainWindow::backwardTraversalPressed);
+    connect(inOrderTraversalFlag, &QRadioButton::clicked, this, &MainWindow::inOrderTraversalPressed);
+
+
     setCentralWidget(centralWidget);
 
 }
+void MainWindow::insert() {
+
+    int data = input->toPlainText().toInt();
+  //  std::cout<<data<<'\n';
+    input->clear();
+    output->clear();
+    treePainter->treeInsert(data);
+  //  std::cout<<treePainter->treeSearch(data)<<'\n';
+    QVector<int> currentTraverse;
+    if (traversalOrder[0]) {
+        currentTraverse = treePainter->getForwardTraverse();
+    }
+    if (traversalOrder[1]) {
+        currentTraverse = treePainter->getBackwardTraverse();
+    }
+    if (traversalOrder[2]) {
+        currentTraverse = treePainter->getInOrderTraverse();
+    }
+
+    QString outputText;
+
+    for (auto num : currentTraverse) {
+        QString numStr;
+        numStr.setNum(num);
+        outputText.append(numStr+ " ");
+    }
+
+    output->setText(outputText);
+
+    treePainter->update();
+}
+void MainWindow::search() {
+    int data = input->toPlainText().toInt();
+    input->clear();
+    output->clear();
+    if ( treePainter->treeSearch(data)) {
+        output->setText("true");
+    } else {
+        output->setText("false");
+    }
+
+}
+void MainWindow::erase() {
+
+
+    int data = input->toPlainText().toInt();
+    input->clear();
+
+    output->clear();
+    treePainter->treeDelete(data);
+    QVector<int> currentTraverse;
+    if (traversalOrder[0]) {
+        currentTraverse = treePainter->getForwardTraverse();
+    }
+    if (traversalOrder[1]) {
+        currentTraverse = treePainter->getBackwardTraverse();
+    }
+    if (traversalOrder[2]) {
+        currentTraverse = treePainter->getInOrderTraverse();
+    }
+
+    QString outputText;
+
+    for (auto num : currentTraverse) {
+        QString numStr;
+        numStr.setNum(num);
+        outputText.append(numStr+ " ");
+    }
+
+    output->setText(outputText);
+    treePainter->update();
+
+}
+
+void MainWindow::forwardTraversalPressed() {
+    std::cout<<124;
+
+        forwardTraversalFlag->setChecked(true);
+        traversalOrder[0] = 1;
+        backwardTraversalFlag->setChecked(false);
+        traversalOrder[1] = 0;
+        inOrderTraversalFlag->setChecked(false);
+        traversalOrder[2] = 0;
+        QVector<int> currentTraverse = treePainter->getForwardTraverse();
+
+        QString outputText;
+
+        for (auto num : currentTraverse) {
+            QString numStr;
+            numStr.setNum(num);
+            outputText.append(numStr+ " ");
+        }
+
+        output->setText(outputText);
+
+}
+
+void MainWindow::backwardTraversalPressed() {
+
+        backwardTraversalFlag->setChecked(true);
+        traversalOrder[1] = 1;
+        forwardTraversalFlag->setChecked(false);
+        traversalOrder[0] = 0;
+        inOrderTraversalFlag->setChecked(false);
+        traversalOrder[2] = 0;
+
+        QVector<int> currentTraverse = treePainter->getBackwardTraverse();
+
+        QString outputText;
+
+        for (auto num : currentTraverse) {
+            QString numStr;
+            numStr.setNum(num);
+            outputText.append(numStr+ " ");
+        }
+
+        output->setText(outputText);
+
+}
+
+void MainWindow::inOrderTraversalPressed() {
+
+        inOrderTraversalFlag->setChecked(true);
+        traversalOrder[2] = 1;
+        forwardTraversalFlag->setChecked(false);
+        traversalOrder[0] = 0;
+        backwardTraversalFlag->setChecked(false);
+        traversalOrder[1] = 0;
+        QVector<int> currentTraverse = treePainter->getInOrderTraverse();
+
+        QString outputText;
+
+        for (auto num : currentTraverse) {
+            QString numStr;
+            numStr.setNum(num);
+            outputText.append(numStr + " ");
+        }
+
+        output->setText(outputText);
+
+}
+
 MainWindow::~MainWindow() {
 
 }

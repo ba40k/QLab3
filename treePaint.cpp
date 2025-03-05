@@ -5,9 +5,37 @@
 
 #include "treePaint.h"
 void treePaint::paintEvent(QPaintEvent *event) {
+    if (tree.getRoot() == nullptr) {
+        return ;
+    }
     QPainter painter(this);
-    painter.setPen(Qt::green);
-    painter.drawRect(0, 0, 350, 400);
+    painter.setPen(Qt::black);
+    const int ellipseWidth = 30;
+    const int ellipseHeight = 30;
+    const int rootX = 200;
+    const int rootY =0;
+    const int leftShift = 30;
+    const int rightShift = 30;
+    const int topShift = 30;
+    std::function<void (Tree<int>::Node*,int,int,int,int)> recursiveDrawing = [&](Tree<int>::Node* vertex, int X, int Y,int parentX, int parentY) {
+        if (vertex == nullptr) {
+            return ;
+        }
+        if (vertex == tree.getRoot()) {
+            painter.drawEllipse(X, Y, ellipseWidth, ellipseHeight);
+            recursiveDrawing(vertex->getLeft(),X-leftShift,Y+topShift,X,Y);
+            recursiveDrawing(vertex->getRight(),X+rightShift,Y+topShift,X,Y);
+            return ;
+        }
+        painter.drawEllipse(X, Y, ellipseWidth, ellipseHeight);
+
+        recursiveDrawing(vertex->getLeft(),X-leftShift,Y+topShift,X,Y);
+        recursiveDrawing(vertex->getRight(),X+rightShift,Y+topShift,X,Y);
+
+        return ;
+    };
+
+   recursiveDrawing(tree.getRoot(),0,0,200,0);
 }
 void treePaint::treeDelete(int data) {
     tree.erase(data);

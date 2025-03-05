@@ -14,6 +14,7 @@
 #include<QLineEdit>
 #include<QTextEdit>
 #include<QPainter>
+#include"treePaint.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -45,14 +46,25 @@ class MainWindow : public QMainWindow
     QTextEdit* output;
     QTextEdit* input;
 
+    treePaint* treePainter;
 
-    Tree<int> tree;
+    QVector<bool> traversalOrder; // f w inO
 
 public:
 
 
 
 private slots:
+    void insert();
+    void search();
+    void erase();
+    void forwardTraversalPressed();
+    void backwardTraversalPressed();
+    void inOrderTraversalPressed();
+
+
+
+
 
 public:
     MainWindow(QWidget *parent = nullptr);

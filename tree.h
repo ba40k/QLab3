@@ -10,7 +10,8 @@
 
 template<typename dataType>
 class Tree {
-private:
+    QVector<QVector<int>> codedTree;
+public:
 
       class Node {
 
@@ -30,6 +31,7 @@ private:
         void setRight(Node *_right);
 
       };
+private:
       void recursiveDelete(dataType data, Node* vertex);
       Node *root;
   void deleteTree(Node* vertex);
@@ -187,21 +189,36 @@ void Tree<dataType>::insert(dataType data) {
     if (search(data)) {
         return;
     }
+    int depth =-1;
     if (root == nullptr) {
+        depth++;
         root = new Node(data);
         root->setParent(nullptr);
+        if (codedTree.size() == 0) {
+            QVector<int> layer(1,0);
+            codedTree.push_back(layer);
+        }
+        codedTree[depth].push_back(data);
         return;
     }
     Node* vertex = root;
     Node* parent = nullptr;
+    int currentPosition = 0;
     while(vertex != nullptr) {
+        depth++;
         parent = vertex;
         if (data > vertex->getData()) {
+            currentPosition = currentPosition *2+1;
             vertex = (vertex->getRight());
         } else {
+            currentPosition*=2;
             vertex = (vertex->getLeft());
         }
     };
+    if (codedTree.size() - 1 < depth) {
+        QVector<int> layer((1<<depth),0);
+    }
+    codedTree[depth][currentPosition] = 1;
     vertex = new Node(data);
     if (parent->getData() < data) {
         parent->setRight(vertex);
