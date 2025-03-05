@@ -20,6 +20,9 @@ void treePaint::paintEvent(QPaintEvent *event) {
             return ;
         }
         std::cout<<X<<' '<<Y<<' '<<leftBorder<<' '<<rightBorder<<'\n';
+        if (vertex!=tree.getRoot()) {
+            painter.drawLine(QPoint(X+ellipseWidth/2,Y),QPoint(parentX + ellipseWidth/2,parentY+ellipseHeight));
+        }
         painter.drawEllipse(X, Y, ellipseWidth, ellipseHeight);
 
         recursiveDrawing(vertex->getLeft(),leftBorder + (rightBorder-leftBorder)/4 ,Y + shiftY ,X,Y,leftBorder,rightBorder - (rightBorder-leftBorder)/2);
