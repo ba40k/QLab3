@@ -62,9 +62,24 @@ void Tree<dataType>::recursiveDelete(dataType data, Node* vertex) {
      if (data == vertex->getData()) {
 
             if (vertex->getParent() == nullptr) { //  удаление корня
+                if (root->getRight() == nullptr && root->getLeft() == nullptr) {
+                    delete root;
+                    root = nullptr;
+                    return ;
+                }
+                if (root->getRight() == nullptr) {
+                    Node* toSwap = vertex->getLeft();
+                    Node* toDelete = vertex;
+
+                    vertex = toSwap;
+                    root = toSwap;
+                    delete toDelete;
+                    return ;
+                }
                 Node* toSwap = findMinmumGreater(vertex);
                 Node* toDelete = vertex;
                 vertex = toSwap;
+                root = toSwap;
                 delete toDelete;
                 return ;
             }
@@ -159,7 +174,7 @@ void Tree<dataType>::Node::setParent(Node *_parent) {
 }
 template<typename dataType>
 void Tree<dataType>::deleteTree(Node* vertex) {
-    std::cout<<vertex->getData()<<'\n';
+    //std::cout<<vertex->getData()<<'\n';
     if (vertex == nullptr) {
         return;
     }
@@ -218,6 +233,9 @@ Tree<dataType>::Node *Tree<dataType>::findMinmumGreater(Node *vertex) {
 }
 template<typename dataType>
 void Tree<dataType>::erase(dataType data) {
+    if (!search(data)) {
+        return ;
+    }
     recursiveDelete(data,root);
 }
 
@@ -283,7 +301,6 @@ std::ostream& operator<<(std::ostream&out, Tree<dataType> &tree) {
 
 template<typename dataType>
 Tree<dataType>::~Tree() {
-    std::cout<<"DESTRUCTIR";
     deleteTree(root);
 }
 
