@@ -19,7 +19,7 @@ void treePaint::paintEvent(QPaintEvent *event) {
         if (vertex == nullptr) {
             return ;
         }
-        std::cout<<X<<' '<<Y<<' '<<leftBorder<<' '<<rightBorder<<'\n';
+       // std::cout<<X<<' '<<Y<<' '<<leftBorder<<' '<<rightBorder<<'\n';
         if (vertex!=tree.getRoot()) {
             painter.drawLine(QPoint(X+ellipseWidth/2,Y),QPoint(parentX + ellipseWidth/2,parentY+ellipseHeight));
         }

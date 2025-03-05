@@ -62,73 +62,50 @@ Tree<dataType>::Node* Tree<dataType>::getRoot() {
 template<typename dataType>
 void Tree<dataType>::recursiveDelete(dataType data, Node* vertex) {
      if (data == vertex->getData()) {
+         Node* toSwap = findMinmumGreater(vertex);
+         if (toSwap == vertex) {
+             if (vertex == root) {
+                 delete root;
+                 root = nullptr;
+                 return ;
+             }
+             if (vertex->getData() > vertex->getParent()->getData()) {
 
-            if (vertex->getParent() == nullptr) { //  удаление корня
-                if (root->getRight() == nullptr && root->getLeft() == nullptr) {
-                    delete root;
-                    root = nullptr;
-                    return ;
-                }
-                if (root->getRight() == nullptr) {
-                    Node* toSwap = vertex->getLeft();
-                    Node* toDelete = vertex;
+                 vertex->getParent()->setRight(nullptr);
+             } else {
+                 vertex->getParent()->setLeft(nullptr);
+             }
+             delete vertex;
 
-                    vertex = toSwap;
-                    root = toSwap;
-                    delete toDelete;
-                    return ;
-                }
-                Node* toSwap = findMinmumGreater(vertex);
-                Node* toDelete = vertex;
-                vertex = toSwap;
-                root = toSwap;
-                delete toDelete;
-                return ;
-            }
+             return;
+         }
 
-            if (vertex->getLeft() == nullptr && vertex->getRight() == nullptr) {  // удаление листа
-                if (vertex->getData() > vertex->getParent()->getData()) { // перед удалением затираем адрес в родителе
-                    vertex->getParent()->setRight(nullptr);
-                } else {
-                    vertex->getParent()->setLeft(nullptr);
-                }
-                delete vertex;
-                return ;
-            }
+         if (toSwap->getLeft() == nullptr && toSwap->getRight() == nullptr) {
 
-            if (vertex->getRight() == nullptr) { //  случай когда я не могу пойти направо и влево
-                Node* toSwap = vertex->getLeft();
-                Node* toDelete = vertex;
+             if (toSwap->getData() >  toSwap->getParent()->getData()) {
+                 toSwap->getParent()->setRight(nullptr);
+             } else {
+                 toSwap->getParent()->setLeft(nullptr);
+             }
+             vertex->setData(toSwap->getData());
+             delete toSwap;
+             return;
+         }
 
-                vertex = toSwap;
-                delete toDelete;
-                return ;
-            }
+         if (toSwap->getRight() != nullptr) {
+             vertex->setRight(toSwap->getRight());
+             toSwap->getRight()->setParent(vertex);
 
-            Node* toSwap = findMinmumGreater(vertex); // мы пошли от этого узла вправо и потом до упора в лево
-            // теперь, поскольку мы собираемся закинуть его на место текущего узла нужно удалить адрес toSwap из родителя
-            Node* toSwapParent = toSwap->getParent();
-            if (toSwapParent->getData() < toSwap->getData()) {
-                toSwapParent->setRight(nullptr);
-            } else {
-                toSwapParent->setLeft(nullptr);
-            }
-            // Теперь мы отсоединили его от родителя
-            //  Вставим его на место текущей вершины, а именно поставим ему соответствующего родителя
-            toSwap->setParent(vertex->getParent());
-            // Теперь остается у нового родителя изменить адрес ребенка
-            if (toSwap->getParent()->getData() < vertex->getData()) {
-                toSwap->getParent()->setRight(toSwap);
-            } else {
-                toSwap->getParent()->setLeft(toSwap);
-            }
+         } else {
+             vertex->setLeft(toSwap->getLeft());
+             toSwap->getLeft()->setParent(vertex);
+         }
 
-            toSwap->setLeft(vertex->getLeft());
-            toSwap->setRight(vertex->getRight());
+         vertex->setData(toSwap->getData());
+         delete toSwap;
+         return;
+     }
 
-            delete vertex;
-            return ;
-        }
 
         if (data > vertex->getData()) {
             recursiveDelete(data,vertex->getRight());
@@ -220,20 +197,42 @@ void Tree<dataType>::insert(dataType data) {
 template<typename dataType>
 Tree<dataType>::Node *Tree<dataType>::findMinmumGreater(Node *vertex) {
 
-
+    if (vertex->getLeft() == nullptr && vertex->getRight() == nullptr) {
+        return vertex;
+    }
     Node* currentVertex = vertex;
     Node* startVertex = vertex;
-    while (true) {
-        if (startVertex == currentVertex) {
-            if (startVertex->getRight() == nullptr) {
-                return startVertex;
+    if (startVertex->getRight()!=nullptr) {
+        while (true) {
+            if (startVertex == currentVertex) {
+                if (startVertex->getRight()->getLeft() == nullptr) {
+                    return startVertex->getRight();
+                }
+                currentVertex= currentVertex->getRight()->getLeft();
+            } else {
+                if (currentVertex->getLeft() == nullptr && currentVertex->getRight() == nullptr) {
+                    return currentVertex;
+                }
+                if (currentVertex->getLeft()!=nullptr) {
+                    currentVertex= currentVertex->getLeft();
+                }
             }
-            currentVertex= currentVertex->getRight();
-        } else {
-            if (currentVertex->getLeft() == nullptr) {
-                return currentVertex;
+        }
+    } else {
+        while (true) {
+            if (startVertex == currentVertex) {
+                if (startVertex->getLeft()->getRight() == nullptr) {
+                    return startVertex->getLeft();
+                }
+                currentVertex= currentVertex->getLeft()-> getRight();
+            } else {
+                if (currentVertex->getLeft() == nullptr && currentVertex->getRight() == nullptr) {
+                    return currentVertex;
+                }
+                if (currentVertex->getLeft()!=nullptr) {
+                    currentVertex= currentVertex->getLeft();
+                }
             }
-            currentVertex= currentVertex->getRight();
         }
     }
 }
