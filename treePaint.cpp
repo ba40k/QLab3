@@ -12,30 +12,23 @@ void treePaint::paintEvent(QPaintEvent *event) {
     painter.setPen(Qt::black);
     const int ellipseWidth = 30;
     const int ellipseHeight = 30;
-    const int rootX = 200;
+    const int rootX = 150;
     const int rootY =0;
-    const int leftShift = 30;
-    const int rightShift = 30;
-    const int topShift = 30;
-    std::function<void (Tree<int>::Node*,int,int,int,int)> recursiveDrawing = [&](Tree<int>::Node* vertex, int X, int Y,int parentX, int parentY) {
+    const int shiftY = 40;
+    std::function<void (Tree<int>::Node*,int,int,int,int,int,int)> recursiveDrawing = [&](Tree<int>::Node* vertex,int X,int Y, int parentX, int parentY,int leftBorder, int rightBorder) {
         if (vertex == nullptr) {
             return ;
         }
-        if (vertex == tree.getRoot()) {
-            painter.drawEllipse(X, Y, ellipseWidth, ellipseHeight);
-            recursiveDrawing(vertex->getLeft(),X-leftShift,Y+topShift,X,Y);
-            recursiveDrawing(vertex->getRight(),X+rightShift,Y+topShift,X,Y);
-            return ;
-        }
+        std::cout<<X<<' '<<Y<<' '<<leftBorder<<' '<<rightBorder<<'\n';
         painter.drawEllipse(X, Y, ellipseWidth, ellipseHeight);
 
-        recursiveDrawing(vertex->getLeft(),X-leftShift,Y+topShift,X,Y);
-        recursiveDrawing(vertex->getRight(),X+rightShift,Y+topShift,X,Y);
+        recursiveDrawing(vertex->getLeft(),leftBorder + (rightBorder-leftBorder)/4 ,Y + shiftY ,X,Y,leftBorder,rightBorder - (rightBorder-leftBorder)/2);
+        recursiveDrawing(vertex->getRight(),rightBorder - (rightBorder-leftBorder)/4 ,Y + shiftY ,X,Y,(rightBorder + leftBorder)/2,rightBorder);
 
         return ;
     };
 
-   recursiveDrawing(tree.getRoot(),0,0,200,0);
+   recursiveDrawing(tree.getRoot(),rootX,rootY,rootX,rootY,0,300);
 }
 void treePaint::treeDelete(int data) {
     tree.erase(data);
